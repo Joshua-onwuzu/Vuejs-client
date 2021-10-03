@@ -1,0 +1,132 @@
+[v-cloak]{
+    display: none;
+}
+
+input[type=button]{
+    margin: 10px;
+}
+
+.page-wrapper{
+    padding: 10px;
+}
+.add-client{
+    position: absolute;
+    background-color: white;
+    top: 10%;
+    left: 25%;
+    right:25%;
+    border: 1px solid #ced4da;
+}
+.add-client-header{
+  border-bottom: 1px solid #ced4da;
+  padding: 10px;
+}
+
+/* .client-info{
+    text-align: center;
+} */
+
+.client-name{
+  float: left;
+  margin-right: 10px;
+  margin-top: 18px;
+}
+.client-section{
+    padding-left: 10%;
+    padding-right: 10%;
+    margin-top: 50px;
+}
+.client-header input{
+    float: right;
+}
+.client-header{
+  padding: 10px;
+  border: 1px solid #ced4da;
+}
+.client-header h3 {
+    display: inline;
+}
+.client-table{
+    border-collapse: collapse;
+    font-family: sans-serif;
+    width: 100%;
+    
+}
+.client-table thead tr {
+
+    text-align: left;
+}
+.client-table th,
+.client-table td {
+    padding: 12px 15px;
+    border: 1px solid #ced4da ;
+}
+.client-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+.client-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+
+
+
+
+.form-box{
+  text-align: center;
+}
+
+
+.row{
+  margin-right: auto;
+  margin-left: auto;
+}
+.inner-box{
+  margin: auto;
+  width:80%
+}
+.provider{
+  text-align: center;
+}
+.provider-box{
+  width: 52%;
+  margin-left: 20%;
+  text-align: left;
+  border: 1px solid #ced4da;
+  padding-left: 10px;
+}
+.form-check-label{
+  margin-right: 10px;
+  margin-left: 10px;
+}
+.form-check{
+  text-align: center;
+
+}
+.icon{
+  padding: 10px;
+}
+.action-bar{
+  margin-top: 20px;
+  padding: 10px;
+  border-top: 1px solid #ced4da;
+}
+.inner-action-bar{
+  text-align: end;
+}
+.col-sm-3 input {
+  margin: auto;
+  padding: .295rem .75rem;
+}
+.inner-form{
+  padding :20px;
+  margin-top: 10px;
+}
+.delete-client{
+  float: left;
+  color: #ffffff;
+  background-color: red;
+}
+.provider-space{
+  margin-left: 10px;
+}

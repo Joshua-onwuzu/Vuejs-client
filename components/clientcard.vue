@@ -1,0 +1,150 @@
+<template>
+    <div v-if="newclientpopup" class="add-client">
+        <form action="">
+            <div class="add-client-header">
+                <h3 v-if="isnewclient">New Client</h3>
+                <h3 v-if="iseditclient">Edit Client</h3>
+            </div>
+            <div class="inner-form">
+                <div class="client-info">
+                    <div class="form-box">
+                        <div class="inner-box">
+                            <div class="form-group row">
+                                <label  class="col-sm-2 col-form-label" >Name</label>
+                                <div v-if="isnewclient" class="col-sm-10">
+                                    <input type="text" class="form-control" v-model="name">
+                                </div>
+                                <div v-if="iseditclient" class="col-sm-10">
+                                    <input type="text" class="form-control" v-model="neweditname"  v-bind:placeholder="editname">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label  class="col-sm-2 col-form-label" >Email</label>
+                                <div v-if="isnewclient" class="col-sm-10">
+                                    <input type="email" class="form-control" v-model="email" >
+                                </div>
+                                <div v-if="iseditclient" class="col-sm-10">
+                                    <input type="email" class="form-control" v-model="neweditemail"  v-bind:placeholder="editemail" >
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label  class="col-sm-2 col-form-label" >Phone</label>
+                                <div v-if="isnewclient" class="col-sm-10">
+                                    <input type="tel" class="form-control" v-model="phone" >
+                                </div>
+                                <div v-if="iseditclient" class="col-sm-10">
+                                    <input type="tel" class="form-control" v-model="neweditphone"  v-bind:placeholder="editphone">
+                                </div>
+                            </div>
+
+                            <Provider 
+                            :iseditclient="iseditclient"
+                            :isnewclient="isnewclient"
+                            :clientprovider="clientprovider"
+                            @providerId="saveProviderId($event)" 
+                            @render="reRender"  
+                            :key="index"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="action-bar">
+            <div class="inner-action-bar">
+                <input v-if="iseditclient" class="delete-client" type="button" value="Delete Client"/>
+                <input v-if="isnewclient" @click="handleCancel" type="button" value="Cancel">
+                <input v-if="iseditclient" @click="handleEditCancel" type="button" value="Cancel">
+                <input v-if="isnewclient" type="button" @click="saveClient" value="Save Client">
+                <input v-if="iseditclient" type="button" @click="editSaveClient" value="Save Client">
+            </div>
+            </div>
+        </form>
+    </div> 
+</template>
+
+<script>
+import Provider  from  './provider.vue' ;
+    export default ({
+        name: "clientcard",
+        methods : {
+            editSaveClient() {
+
+                let name = this.neweditname;
+                if(this.neweditname == null){
+                    name = this.editname
+                }
+                let phone = this.neweditphone;
+                if(this.neweditphone == null){
+                    phone = this.editphone
+                }
+                let email = this.neweditemail;
+                if(this.neweditemail == null){
+                    email = this.editemail
+                }
+
+                const clientData = {
+                    id : this.editid,
+                    name : name,
+                    email : email,
+                    phone : phone,
+                    providerArray : this.clientprovider
+                }
+                const response = fetch ("http://localhost:3000/updateClient",{
+                    method : 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        },
+                    body : JSON.stringify(clientData)
+                })
+
+                window.location.reload()
+
+            },
+            saveProviderId (id){
+                this.idArray.push(id)
+            },
+            handleCancel (){
+                this.$emit("cancel");
+            },
+            handleEditCancel (){
+                this.$emit("clear")
+            },
+            saveClient (){
+                const clientData = {
+                    name : this.name,
+                    email : this.email,
+                    phone : this.phone,
+                    providerArray : [...this.idArray]
+                }
+
+                const response = fetch ("http://localhost:3000/addClient",{
+                    method : 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body : JSON.stringify(clientData)
+                })
+                window.location.reload()
+            },
+            reRender(){
+                this.index +=1
+            }
+        },
+        data : ()=>{
+        return {
+            name: "",
+            phone : "",
+            email : "",
+            idArray : [],
+            index : 0,
+            neweditphone : null,
+            neweditname : null,
+            neweditemail :null
+        }
+        },
+        props: ["newclientpopup","editid","editclientpopup","clientprovider","isnewclient","iseditclient","client","editname","editphone","editemail"],
+        components : {
+            Provider
+        }
+    });
+</script>

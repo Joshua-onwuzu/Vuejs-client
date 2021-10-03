@@ -8,5 +8,19 @@
     "start": "node server.js"
   },
   "author": "Joshua Onwuzu",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "vue": "^2.6.14",
+    "vue-cli": "^2.9.6",
+    "vue-loader": "^15.9.8",
+    "vue-template-compiler": "^2.6.14",
+    "webpack": "^5.56.0",
+    "webpack-cli": "^4.8.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^6.0.8"
+  }
 }
