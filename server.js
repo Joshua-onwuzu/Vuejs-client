@@ -118,7 +118,11 @@ const createProvider = async ()=>{
 
 createProvider();
 
-let count = 4 ;
+let count = null ;
+
+Provider.find({},(err,data)=>{
+    count = data.length + 1
+})
 
 app.get('/', (req, res)=>{
     res.sendFile(__dirname + "/src/index.html");
@@ -172,13 +176,18 @@ app.post('/addProvider',(req,res)=>{
             Table.find({},(err,data)=>{
                 Table.findOneAndUpdate({_id : data[0]._id}, {$push: {provider : pdata}},{ 'new': true },(err,data)=>{
                     if(!err){
-                        res.send("saved to providers array")
-                    }
+                        res.send({
+                            success : "successfully added a provider"
+                        });
+                    };
                 })
             })
+        } else {
+            console.log(err)
         }
     });
     count++
+
 });
 
 app.post('/getClient',(req,res)=>{
@@ -231,9 +240,11 @@ app.post('/deleteProvider', (req,res)=>{
                         if(!err){
                             Provider.findByIdAndRemove(req.body.id, (err)=>{
                                 if(!err){
-                                    res.send("deleted successfully")
+                                    res.send({
+                                        success : "sucessfully deleted a provider"
+                                    });
                                 }
-                            })
+                            });
                         }
                     } )
                 }

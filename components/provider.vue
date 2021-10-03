@@ -23,11 +23,12 @@
         <div v-if="isnewclient" class="provider">
             <div class="provider-box">
                 <div  v-for="provider in providers" :key="provider._id" class="form-check">
-                    <input @change="handleCheckbox" v-bind:value="provider.name" class="form-check-input" type="checkbox" v-bind:id="provider._id">
-                    <label class="form-check-label" >
+                    <input  @change="handleCheckbox" v-bind:value="provider.name" class="form-check-input col-sm-2" type="checkbox" v-bind:id="provider._id">
+                    
+                    <label class="form-check-label col-sm-6" >
                         {{provider.name}}
                     </label>
-                    <span class="icon">
+                    <span class="icon col-sm-2">
                         <i @click="deleteProvider($event)"  v-bind:id="provider._id" class="fas fa-trash"></i>
                     </span>
                 </div>
@@ -55,13 +56,13 @@
         },
 
         methods : {
-            deleteProvider (event){
+            async deleteProvider (event){
 
                 const providerid = {
                     id : event.target.id
                 }
 
-                fetch("http://localhost:3000/deleteProvider",{
+                const response = await fetch("http://localhost:3000/deleteProvider",{
                     method : 'POST',
                     headers : {
                         'Content-Type': 'application/json'
@@ -69,7 +70,11 @@
                     body: JSON.stringify(providerid)
                 });
 
-                this.$emit("render")
+                const data = await response.json()
+                if(data.success){
+                    this.$emit("render")
+                }
+                
             },
             handleCheckbox (event){
 
@@ -80,13 +85,13 @@
                 
                 this.$emit("providerId",obj)
             },
-            addProvider(){
+            async addProvider(){
 
                 const providerData = {
                     provider : this.newProvider
                 }
 
-                fetch("http://localhost:3000/addProvider",{
+                const response = await fetch("http://localhost:3000/addProvider",{
                     method : 'POST',
                     headers : {
                         'Content-Type': 'application/json'
@@ -94,7 +99,11 @@
                     body: JSON.stringify(providerData)
                 });
 
-                this.$emit("render")
+                const data =  await response.json()
+                if(data.success){
+                    this.$emit("render")
+                }
+                
             },
             async  makeRequest (){
 
