@@ -77,7 +77,6 @@
                 
             },
             handleCheckbox (event){
-                
 
                 if(event.target.checked){
                     const obj = {
@@ -86,6 +85,13 @@
                     }
                     
                     this.$emit("providerId",obj)
+                } else {
+                        const obj = {
+                        id : event.target.id,
+                        name : event.target.value
+                    }
+                    
+                    this.$emit("popId",obj)
                 }
 
 

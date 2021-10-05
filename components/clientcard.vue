@@ -44,6 +44,7 @@
                             @providerId="saveProviderId($event)" 
                             @render="reRender"  
                             :key="index"
+                            @popId="popId($event)"
                             />
                         </div>
                     </div>
@@ -105,6 +106,9 @@ import Provider  from  './provider.vue' ;
             },
             saveProviderId (id){
                 this.idArray.push(id)
+            },
+            popId (id){
+                this.idArray.pop(id)
             },
             handleCancel (){
                 this.$emit("cancel");
