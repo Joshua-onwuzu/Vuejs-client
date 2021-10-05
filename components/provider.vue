@@ -77,13 +77,18 @@
                 
             },
             handleCheckbox (event){
-
-                const obj = {
-                    id : event.target.id,
-                    name : event.target.value
-                }
                 
-                this.$emit("providerId",obj)
+
+                if(event.target.checked){
+                    const obj = {
+                        id : event.target.id,
+                        name : event.target.value
+                    }
+                    
+                    this.$emit("providerId",obj)
+                }
+
+
             },
             async addProvider(){
 
