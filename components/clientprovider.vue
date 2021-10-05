@@ -1,12 +1,13 @@
 <template>
     <div>
-        <input v-if="clientArray.includes(this.id)" @change="handleCheckbox" v-model="checked" class="form-check-input" type="checkbox" >
-        <input v-else @change="handleCheckbox" v-model="unchecked" class="form-check-input" type="checkbox" >
-        <label class="form-check-label" >
+        <input v-if="clientArray.includes(this.id)" v-model="checked" class="form-check-input col-sm-2" type="checkbox" >
+        <input v-else  v-model="unchecked" class="form-check-input col-sm-2" type="checkbox" >
+        <label class="form-check-label col-sm-6" >
             {{name}}
         </label>
-        <span class="icon"><i class="fas fa-edit"></i></span>
-        <span class="icon"><i class="fas fa-trash"></i></span>
+        <span class="icon col-sm-2">
+            <i class="fas fa-trash"></i>
+        </span>
     </div>
 
 </template>

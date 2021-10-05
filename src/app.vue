@@ -25,10 +25,8 @@
                         <td>
                             <EditAndDelete @deletehandler="deleteHandler" @edithandler="editHandler($event)" :id="client._id" :client="client" @editnewclient="editClient" />
                         </td>
-                        
-                    </tr>
-                </tbody>
-            </table>
+
+
             <ClientCard 
             @clear="editClient"
             :editclientpopup="editclientpopup"
@@ -41,7 +39,14 @@
             :editphone="editphone"
             :editemail="editemail"
             :clientprovider="clientprovider"
+            :keyid="client._id"
+            @deleteclient="deleteHandler($event)"
             />
+                        
+                    </tr>
+                </tbody>
+            </table>
+
         </div>
     </div>
 </template>

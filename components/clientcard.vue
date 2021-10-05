@@ -51,7 +51,7 @@
             </div>
             <div class="action-bar">
             <div class="inner-action-bar">
-                <input v-if="iseditclient" class="delete-client" type="button" value="Delete Client"/>
+                <input v-if="iseditclient" v-bind:id="this.keyid" @click="handleDelete($event)" class="delete-client" type="button" value="Delete Client"/>
                 <input v-if="isnewclient" @click="handleCancel" type="button" value="Cancel">
                 <input v-if="iseditclient" @click="handleEditCancel" type="button" value="Cancel">
                 <input v-if="isnewclient" type="button" @click="saveClient" value="Save Client">
@@ -67,6 +67,9 @@ import Provider  from  './provider.vue' ;
     export default ({
         name: "clientcard",
         methods : {
+            handleDelete (event){
+                this.$emit("deleteclient", event.target.id)
+            },
             editSaveClient() {
 
                 let name = this.neweditname;
@@ -142,7 +145,7 @@ import Provider  from  './provider.vue' ;
             neweditemail :null
         }
         },
-        props: ["newclientpopup","editid","editclientpopup","clientprovider","isnewclient","iseditclient","client","editname","editphone","editemail"],
+        props: ["newclientpopup","editid","keyid","editclientpopup","clientprovider","isnewclient","iseditclient","client","editname","editphone","editemail"],
         components : {
             Provider
         }
