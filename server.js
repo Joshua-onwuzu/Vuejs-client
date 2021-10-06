@@ -1,24 +1,27 @@
 const express = require("express");
 
-const mongoose= require("mongoose");
 
-const clientController = require("./controllers/clientController")
+const db = require('./app/models');
 
-mongoose.connect("mongodb://localhost:27017/ClientDB",{useNewUrlParser : true, useUnifiedTopology:true});
+
+db.mongoose.connect(db.url,{useNewUrlParser : true, useUnifiedTopology:true})
+
 
 const app = express();
 
 app.use(express.static("public"));
 
-app.use(express.json())
-
-app.use('/api', clientController)
+app.use(express.json());
 
 
 
 app.get('/', (req, res)=>{
     res.sendFile(__dirname + "/src/index.html");
 });
+
+
+require('./app/routes/routes.js')(app);
+
 
 
 app.listen("3000", ()=>{
