@@ -59,7 +59,7 @@
 
     export default{
         async created (){
-            const response = await fetch('http://localhost:3000/client');
+            const response = await fetch('http://localhost:3000/api/client');
             const data = await response.json();
             this.clients = data[0].client
         },
@@ -78,16 +78,8 @@
             },
 
             async editHandler (id){
-                const clientId = {
-                    id : id
-                }
-                const response = await fetch ("http://localhost:3000/getClient",{
-                    method : 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                        },
-                    body : JSON.stringify(clientId)
-                });
+
+                const response = await fetch (`http://localhost:3000/api/client/${id}`)
                 const data = await response.json();
                 this.editid = data._id
                 this.editname = data.name 
@@ -103,17 +95,8 @@
             },
 
             deleteHandler(id){
-                const deleteid = {
-                    id : id
-                }
 
-                fetch("http://localhost:3000/delete",{
-                    method : 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                        },
-                    body : JSON.stringify(deleteid) 
-                })
+                fetch(`http://localhost:3000/api/delete/client/${id}`)
 
                 window.location.reload()
             }

@@ -128,14 +128,24 @@ app.get('/', (req, res)=>{
     res.sendFile(__dirname + "/src/index.html");
 });
 
-app.get('/getProvider',(req,res)=>{
+app.get('/api/providers',(req,res)=>{
     Table.find({},(err,data)=>{
-        res.send(data[0].provider)
+        res.status(200).send(data[0].provider)
     })
 });
 
-app.post('/addClient',(req,res)=>{
+app.post('/api/add-client',(req,res)=>{
+
     const {name,email,phone,providerArray} = req.body;
+
+    if (!name || !email || !phone || !providerArray){
+
+        res.status(400).send({
+            status : "fail",
+            message : "all field required"
+        })
+    }
+
     const idArray = providerArray.map(eachId =>{
         return {
             id : eachId.id,
@@ -151,141 +161,222 @@ app.post('/addClient',(req,res)=>{
     })
 
     newClient.save((err,cdata)=>{
-        if (!err){
-            Table.find({},(err,data)=>{
-                Table.findOneAndUpdate({_id : data[0]._id}, {$push: {client : cdata}},{ 'new': true },(err,data)=>{
-                    if(!err){
-                        res.send("saved to client array")
-                    }
-                })
-            })
+
+        if (err){
+            res.status(500).send(err)
         }
+
+        Table.find({},(err,data)=>{
+            Table.findOneAndUpdate({_id : data[0]._id}, {$push: {client : cdata}},{ 'new': true },(err,data)=>{
+                if(!err){
+                    res.status(200).send({
+                        status : "success",
+                        message : "successfully saved client"
+                    })
+                }
+            })
+        })
+
     })
 
     
 });
 
-app.post('/addProvider',(req,res)=>{
+app.post('/api/add-provider',(req,res)=>{
+
     const name = req.body.provider;
+
+    if (!name){
+        res.status(400).send({
+            status : "fail",
+            message : "cannot add provider of name undefined"
+        })
+    }
+
     const newProvider = new Provider ({
         _id : count,
         name : name
     });
+
     newProvider.save((err,pdata)=>{
-        if (!err){
-            Table.find({},(err,data)=>{
-                Table.findOneAndUpdate({_id : data[0]._id}, {$push: {provider : pdata}},{ 'new': true },(err,data)=>{
-                    if(!err){
-                        res.send({
-                            success : "successfully added a provider"
-                        });
-                    };
-                })
-            })
-        } else {
-            console.log(err)
+
+        if(err){
+            res.status(500).send(err)
         }
+        Table.find({},(err,data)=>{
+            Table.findOneAndUpdate({_id : data[0]._id}, {$push: {provider : pdata}},{ 'new': true },(err,data)=>{
+                if(!err){
+                    res.status(200).send({
+                        status : "success",
+                        message : "successfully added a provider"
+                    });
+                };
+            })
+        })
+
     });
     count++
 
 });
 
-app.post('/getClient',(req,res)=>{
-    Client.findOne({_id : req.body.id},(err,data)=>{
-        if(!err){
-            res.send(data)
+app.get('/api/client/:id',(req,res)=>{
+    Client.findOne({_id : req.params.id},(err,data)=>{
+        
+        if(err){
+            res.status(500)
         }
+
+        res.status(200).send(data)
+
     })
 });
 
-app.get("/client", (req,res)=>{
+app.get("/api/client", (req,res)=>{
+
     Table.find({},(err,data)=>{
-        res.send(data)
+
+        if(err){
+            res.status(500).send(err)
+        }
+
+        res.status(200).send(data)
+
     })
 });
 
-app.post('/delete',(req,res)=>{
+app.get('/api/delete/client/:id',(req,res)=>{
 
     Table.find({},(err,tdata)=>{
+
         if(!err){
-            Client.findOne({_id : req.body.id},(err,data)=>{
-                if(!err){
-                    const clientName = data.name
-                    Table.findOneAndUpdate({_id : tdata[0]._id},{$pull : {client :{name : clientName}}},{ 'new': true },(err,data)=>{
-                        if(!err){
-                            Client.findByIdAndRemove(req.body.id, (err)=>{
-                                if(!err){
-                                    res.send("deleted successfuly")
-                                }
-                            })
-                        }
-                    } )
+
+            Client.findOne({_id : req.params.id},(err,data)=>{
+
+                if (err){
+                    res.status(400).send({
+                        status : "fail",
+                        message : "unrecognized client id"
+                    })
                 }
 
+                const clientName = data.name
+
+                Table.findOneAndUpdate({_id : tdata[0]._id},{$pull : {client :{name : clientName}}},{ 'new': true },(err,data)=>{
+
+                    Client.findByIdAndRemove(req.params.id, (err)=>{
+
+                        if(err){
+                            res.status(500).send(err)
+                        }
+
+                        res.status(200).send({
+                            status : "success",
+                            message : "sucessfully deleted"
+                        })
+                    })
+                } )
             })
         }
     })
 
 });
 
-app.post('/deleteProvider', (req,res)=>{
+app.get('/api/delete/provider/:id', (req,res)=>{
     
 
     Table.find({},(err,tdata)=>{
         if(!err){
-            Provider.findOne({_id : req.body.id},(err,data)=>{
-                if(!err){
-                    const providerName = data.name
-                    Table.findOneAndUpdate({_id : tdata[0]._id},{$pull : {provider :{name : providerName}}},{ 'new': true },(err,data)=>{
-                        if(!err){
-                            Provider.findByIdAndRemove(req.body.id, (err)=>{
-                                if(!err){
-                                    res.send({
-                                        success : "sucessfully deleted a provider"
-                                    });
-                                }
-                            });
-                        }
-                    } )
+
+            Provider.findOne({_id : req.params.id},(err,data)=>{
+
+                if(err){
+                    res.status(400).send({
+                        status : "fail",
+                        message : "unrecognized provider id"
+                    })
                 }
 
+                const providerName = data.name
+
+                Table.findOneAndUpdate({_id : tdata[0]._id},{$pull : {provider :{name : providerName}}},{ 'new': true },(err,data)=>{
+
+                    if(err){
+                        res.status(500).send({
+                            status : "fail",
+                            message : "failed to delete provider"
+                        })
+                    }
+
+                    Provider.findByIdAndRemove(req.params.id, (err)=>{
+                        if(!err){
+                            res.send({
+                                status : "success",
+                                message : "provider sucessfully deleted"
+                            });
+                        }
+                    });
+                })
             })
         }
     })
 });
 
-app.post('/updateClient',(req, res)=>{
-    const {name,email,phone,providerArray} = req.body
+app.post('/api/update/client/:id',(req, res)=>{
+
+    const {name,email,phone,providerArray} = req.body ;
+
+    if(!name || !email || !phone || !providerArray){
+        res.status(400).send({
+            status : "failed",
+            message : "all fields required"
+        })
+    }
+
     const newClient = new Client ({
         name : name,
         email : email,
         phone : phone,
         provider : [...providerArray]
     })
+
     Table.find({},(err,tdata)=>{
         if(!err){
-            Client.findOne({_id : req.body.id},(err,data)=>{
-                if(!err){
-                    const clientName = data.name
-                    Table.findOneAndUpdate({_id : tdata[0]._id},{$pull : {client :{name : clientName}}},{ 'new': true },(err,data)=>{
-                        if(!err){
-                            newClient.save((err,cdata)=>{
-                                if(!err){
-                                    Table.findOneAndUpdate({_id : tdata[0]._id}, {$push: {client : cdata}},{ 'new': true },(err,data)=>{
+            Client.findOne({_id : req.params.id},(err,data)=>{
+
+                if(err){
+                    res.status(400).send({
+                        status : "fail",
+                        message : "unrecognized client id"
+                    })
+                }
+
+                const clientName = data.name
+
+                Table.findOneAndUpdate({_id : tdata[0]._id},{$pull : {client :{name : clientName}}},{ 'new': true },(err,data)=>{
+                    if(!err){
+
+                        newClient.save((err,cdata)=>{
+                            if(!err){
+
+                                Table.findOneAndUpdate({_id : tdata[0]._id}, {$push: {client : cdata}},{ 'new': true },(err,data)=>{
+
+                                    if(err){
+                                        res.status(500).send(err)
+                                    }
+
+                                    Client.findByIdAndRemove(req.params.id, (err)=>{
                                         if(!err){
-                                            Client.findByIdAndRemove(req.body.id, (err)=>{
-                                                if(!err){
-                                                    res.send("edit successfuly")
-                                                }
+                                            res.status(200).send({
+                                                status : "success",
+                                                message : "client edited successfully"
                                             })
                                         }
                                     })
-                                }
-                            })
-                        }
-                    } )
-                }
-
+                                })
+                            }
+                        })
+                    }
+                } )
             })
         }
     })

@@ -58,22 +58,12 @@
         methods : {
             async deleteProvider (event){
 
-                const providerid = {
-                    id : event.target.id
-                }
-
-                const response = await fetch("http://localhost:3000/deleteProvider",{
-                    method : 'POST',
-                    headers : {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(providerid)
-                });
+                const response = await fetch(`http://localhost:3000/api/delete/provider/${event.target.id}`)
 
                 const data = await response.json()
-                if(data.success){
-                    this.$emit("render")
-                }
+
+                data.status == "success" ? this.$emit("render") : null
+
                 
             },
             handleCheckbox (event){
@@ -102,7 +92,7 @@
                     provider : this.newProvider
                 }
 
-                const response = await fetch("http://localhost:3000/addProvider",{
+                const response = await fetch("http://localhost:3000/api/add-provider",{
                     method : 'POST',
                     headers : {
                         'Content-Type': 'application/json'
@@ -111,14 +101,13 @@
                 });
 
                 const data =  await response.json()
-                if(data.success){
-                    this.$emit("render")
-                }
+                
+                data.status == "success" ? this.$emit("render") : null
                 
             },
             async  makeRequest (){
 
-                const response = await fetch('http://localhost:3000/getProvider');
+                const response = await fetch('http://localhost:3000/api/providers');
 
                 const data = await response.json();
                 

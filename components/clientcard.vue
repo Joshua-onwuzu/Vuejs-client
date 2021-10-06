@@ -87,13 +87,12 @@ import Provider  from  './provider.vue' ;
                 }
 
                 const clientData = {
-                    id : this.editid,
                     name : name,
                     email : email,
                     phone : phone,
                     providerArray : this.clientprovider
                 }
-                const response = fetch ("http://localhost:3000/updateClient",{
+                const response = fetch (`http://localhost:3000/api/update/client/${this.editid}`,{
                     method : 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -124,7 +123,7 @@ import Provider  from  './provider.vue' ;
                     providerArray : [...this.idArray]
                 }
 
-                const response = fetch ("http://localhost:3000/addClient",{
+                const response = fetch ("http://localhost:3000/api/add-client",{
                     method : 'POST',
                     headers: {
                         'Content-Type': 'application/json'
