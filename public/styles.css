@@ -103,6 +103,21 @@ input[type=button]{
   text-align: left;
 
 }
+.emptyprovider{
+  text-align: center;
+  padding: 20px;
+}
+.emptyprovider h5 {
+  color: rgb(145, 140, 140);
+}
+.emptyclient{
+  text-align: center;
+  padding: 50px;
+  width: 100%;
+}
+.emptyclient h3 {
+  color: rgb(145, 140, 140);
+}
 .icon{
   padding: 10px;
 }

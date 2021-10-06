@@ -4,9 +4,12 @@
     <h2 v-if="isnewclient">Adding a client</h2>
     <h2 v-if="iseditclient">Editing a Client</h2>
 
-    <div class="client-section">
+    <div class="client-section" v-cloak>
         <Header @showclient="showNewClient"/>
-        <table class="client-table">
+            <div v-if="clients.length ==0" class="emptyclient">
+                <h3> Add new client. </h3>
+            </div>
+        <table v-if="clients.length > 0"  class="client-table">
             
             <thead>
                 <th>Name</th>
@@ -46,6 +49,21 @@
                 </tr>
             </tbody>
         </table>
+
+        <ClientCard v-if="clients.length == 0"
+        @clear="editClient"
+        :editclientpopup="editclientpopup"
+        :newclientpopup="newclientpopup"
+        @cancel="showNewClient" 
+        :isnewclient="isnewclient" 
+        :iseditclient="iseditclient"
+        :editid = "editid"
+        :editname="editname"
+        :editphone="editphone"
+        :editemail="editemail"
+        :clientprovider="clientprovider"
+        @deleteclient="deleteHandler($event)"
+        />
     </div>
 </div>
 </template>
@@ -101,6 +119,8 @@
                 window.location.reload()
             }
         },
+
+
         data : ()=>{
             return {
                 clients : [],

@@ -52,11 +52,11 @@
             </div>
             <div class="action-bar">
             <div class="inner-action-bar">
-                <input v-if="iseditclient" v-bind:id="this.keyid" @click="handleDelete($event)" class="delete-client" type="button" value="Delete Client"/>
-                <input v-if="isnewclient" @click="handleCancel" type="button" value="Cancel">
-                <input v-if="iseditclient" @click="handleEditCancel" type="button" value="Cancel">
-                <input v-if="isnewclient" type="button" @click="saveClient" value="Save Client">
-                <input v-if="iseditclient" type="button" @click="editSaveClient" value="Save Client">
+                <input v-if="iseditclient" v-bind:id="this.keyid" @click="handleDelete($event)" class="delete-client btn btn-sm" type="button" value="Delete Client"/>
+                <input v-if="isnewclient" @click="handleCancel" type="button" value="Cancel" >
+                <input v-if="iseditclient" @click="handleEditCancel" type="button" value="Cancel" >
+                <input v-if="isnewclient" type="button" @click="saveClient" value="Save Client" >
+                <input v-if="iseditclient" type="button" @click="editSaveClient" value="Save Client" >
             </div>
             </div>
         </form>

@@ -22,6 +22,9 @@
         </div>
         <div v-if="isnewclient" class="provider">
             <div class="provider-box">
+                <div class="emptyprovider" v-if="providers.length == 0">
+                    <h5>Add new providers </h5>
+                </div>
                 <div  v-for="provider in providers" :key="provider._id" class="form-check">
                     <input  @change="handleCheckbox($event)" v-bind:value="provider.name" class="form-check-input col-sm-2" type="checkbox" v-bind:id="provider._id">
                     
