@@ -1,5 +1,9 @@
 const db = require('../models');
 
+const defaultClient = require('./defaults/defaultClient.js');
+
+const defaultProvider = require('./defaults/defaultProvider.js')
+
 const Client = db.client ;
 
 const Provider = db.provider ;
@@ -8,6 +12,40 @@ const Table = db.table ;
 
 let count = null ;
 
+
+const createProvider = async ()=>{
+    const execute = await  Provider.find({},);
+    if(execute.length == 0){
+        const doIt = await Provider.insertMany(defaultProvider);
+        const client = await Client.insertMany(defaultClient)
+        if (doIt){
+            Table.find({},(err,tdata)=>{
+                if (tdata.length === 0){
+                    try{
+                        Provider.find({},(err,pdata)=>{
+                            if(pdata.length > 0){
+                                Client.find({},(err,cdata)=>{
+                                    if (cdata.length > 0){
+                                        const newTable = new Table ({
+                                            client : [...cdata],
+                                            provider : [...pdata]
+                                        });
+                                        newTable.save();
+                                    }
+                                })
+                            }
+                        });
+                    } catch (err){
+                        console.log(err);
+                    }
+            
+                }
+            });
+        }
+    }
+}
+
+createProvider();
 
 Provider.find({},(err,data)=>{
     count = data.length + 1
@@ -78,7 +116,6 @@ exports.addProvider = (req,res)=>{
         const name = req.body.provider;
 
         if (!name){
-            console.log("bad")
             res.status(400).send({
                 status : "fail",
                 message : "cannot add provider of name undefined"

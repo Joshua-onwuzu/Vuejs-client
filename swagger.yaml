@@ -11,6 +11,93 @@ tags:
 schemes:
 - "http"
 paths:
+  /client:
+    get:
+      tags:
+      - "clients"
+      summary: "Gets all client"
+      description: ""
+      operationId: "getClients"
+      produces:
+      - "application/xml"
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+        "500":
+          description: "Internal server error"
+  /add-client:
+    post:
+      tags:
+      - "clients"
+      summary: "Add clients"
+      description: ""
+      operationId: "addClient"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Client details to create"
+        required: true
+        schema:
+          $ref: "#/definitions/Client"
+      responses:
+        "200":
+          description: "successful saved client"
+        "500" : 
+          description : Internal server error        
+  /client/{id}:
+    get:
+      tags:
+      - "clients"
+      summary: "Find client by id"
+      description: ""
+      operationId: "getClientById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of client that needs to be fetched"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful fetched client"
+        "404":
+          description: "Client not found"
+  /update/client/{id}:
+    post:
+      tags:
+      - "clients"
+      summary: "Updates a client with it id"
+      description: ""
+      operationId: "FindAndUpdateClientById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in : "path"
+        name : "id"
+        description: "ID of client that needs to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Give a single client field to be updated"
+        required: true
+        type: "object"
+          
+      responses:
+        "200":
+          description: "successful updated client"
+        "400":
+          description : "Invalid ID"  
+        "500":
+          description : "Internal server error"  
   /delete/client/{id}:
     get:
       tags:
@@ -29,36 +116,15 @@ paths:
         type: "string"
       responses:
         "200":
-          description: "successful deleted"
+          description: "successfully deleted"
         "404":
           description: "unrecognized client id"
-  /delete/provider/{id}:
-    get:
-      tags:
-      - "clients"
-      summary: "Find provider by id and delete"
-      description: ""
-      operationId: "findProviderByIdAndDelete"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "id"
-        in: "path"
-        description: "Provider Id to be deleted"
-        required: true
-        type: "number"
-      responses:
-        "200":
-          description: "successful deleted a provider"
-        "400":
-          description: "Invalid ID"
   /providers:
     get:
       tags:
       - "clients"
       summary: "Returns all providers"
-      description: "Returns an object of providers"
+      description: "Returns an array of providers"
       operationId: "getProvider"
       produces:
       - "application/json"
@@ -89,133 +155,32 @@ paths:
           description: "successfully added provider"
         "400":
           description: "Invalid Provider"
-  /client/{id}:
+  /delete/provider/{id}:
     get:
       tags:
       - "clients"
-      summary: "Find client by id"
+      summary: "Find provider by id and delete"
       description: ""
-      operationId: "getClientById"
+      operationId: "findProviderByIdAndDelete"
       produces:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: "clientId"
+      - name: "id"
         in: "path"
-        description: "ID of client that needs to be fetched"
+        description: "Provider Id to be deleted"
         required: true
         type: "number"
       responses:
         "200":
-          description: "successful created client"
+          description: "successful deleted a provider"
         "400":
-          description: "Invalid client ID "
-        "404":
-          description: "Client not found"
-  /add-client:
-    post:
-      tags:
-      - "clients"
-      summary: "Add clients"
-      description: ""
-      operationId: "addClient"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Created Client object"
-        required: true
-        schema:
-          $ref: "#/definitions/Client"
-      responses:
-        "200":
-          description: "successful created client"
-        "500" : 
-          description : Internal server error
-  /update/client/{id}:
-    post:
-      tags:
-      - "clients"
-      summary: "Updates a client with it id"
-      description: ""
-      operationId: "FindAndUpdateClientById"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in : "path"
-        name : "id"
-        description: "ID of client that needs to be fetched"
-        required: true
-        type: "number"
-      - in: "body"
-        name: "body"
-        description: "Client field to be updated"
-        required: true
-        type: "object"
-        schema:
-          $ref: "#/definitions/Client"
-      responses:
-        "200":
-          description: "successful updated client"
-        "400":
-          description : "Invalid ID"  
-        "500":
-          description : "Internal server error"  
-  /client:
-    get:
-      tags:
-      - "clients"
-      summary: "Gets all client"
-      description: ""
-      operationId: "getClients"
-      produces:
-      - "application/xml"
-      - "application/json"
-      responses:
-        "200":
-          description: "successful operation"
-        "500":
-          description: "Internal server error"
+          description: "Invalid ID"
 
 definitions:
-  Table:
-    type: "object"
-    properties:
-      client : 
-        type: "array"
-        items :
-          type : "object"
-          properties:
-            name:
-              type: "string"
-            email:
-              type: "string"
-            phone:
-              type: "integer"
-            provider : 
-              type: "array"
-              items: 
-                type : "object"
-                properties :
-                  id:
-                    type: "integer"
-                  name: 
-                    type : "string"
-      provider : 
-        type : object
-        properties : 
-          id : number
-          name : string
-    xml:
-      name: "Table"
   Provider:
     type: "object"
     properties:
-      id:
-        type: "number"
       provider:
         type: "string"
     xml:
