@@ -5,9 +5,6 @@
         <label class="form-check-label col-sm-6" >
             {{name}}
         </label>
-        <span class="icon col-sm-2">
-            <i class="fas fa-trash"></i>
-        </span>
     </div>
 
 </template>

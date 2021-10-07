@@ -120,9 +120,11 @@ exports.findByClientId = (req,res)=>{
                 status : "fail",
                 message : "client not found"
             })
+        }else{
+            res.status(200).send(data)
         }
 
-        res.status(200).send(data)
+        
 
     })
 };
@@ -130,7 +132,7 @@ exports.findByClientId = (req,res)=>{
 
 exports.getClients =  (req,res)=>{
 
-    Table.find({},(err,data)=>{
+    Client.find({},(err,data)=>{
 
         if(err){
             res.status(500).send(err)
@@ -150,12 +152,12 @@ exports.findAndDeleteClient = (req,res)=>{
     
                 Client.findOne({_id : req.params.id},(err,data)=>{
     
-                    if (err){
+                    if (data == null){
                         res.status(404).send({
                             status : "fail",
                             message : "unrecognized client id"
                         })
-                    }
+                    };
     
                     const clientName = data.name
     
@@ -229,65 +231,101 @@ exports.findAndDeleteProvider =  (req,res)=>{
 
 
 exports.findAndUpdateClient = (req, res)=>{
-
     try{
-        const {name,email,phone,providerArray} = req.body ;
+        
+        const {name,email,phone} = req.body ;
 
-        if(!name || !email || !phone || !providerArray){
-            res.status(400).send({
-                status : "failed",
-                message : "all fields required"
-            })
-        }
-    
-        const newClient = new Client ({
-            name : name,
-            email : email,
-            phone : phone,
-            provider : [...providerArray]
-        })
-    
-        Table.find({},(err,tdata)=>{
+        if(!name && !email){
+           const request = req.body.phone
+           Client.findOneAndUpdate({_id : req.params.id},{phone : request},{ new: true },(err,data)=>{
             if(!err){
-                Client.findOne({_id : req.params.id},(err,data)=>{
-    
-                    if(data == null){
-                        res.status(404).send({
-                            status : "fail",
-                            message : "unrecognized client id"
-                        })
-                    }
-    
-                    const clientName = data.name
-    
-                    Table.findOneAndUpdate({_id : tdata[0]._id},{$pull : {client :{name : clientName}}},{ 'new': true },(err,data)=>{
-                        if(!err){
-    
-                            newClient.save((err,cdata)=>{
-                                if(!err){
-    
-                                    Table.findOneAndUpdate({_id : tdata[0]._id}, {$push: {client : cdata}},{ 'new': true },(err,data)=>{
-    
-                                        if(err){
-                                            res.status(500).send(err)
-                                        }
-    
-                                        Client.findByIdAndRemove(req.params.id, (err)=>{
-                                            if(!err){
-                                                res.status(200).send({
-                                                    status : "success",
-                                                    message : "client edited successfully"
-                                                })
-                                            }
-                                        })
-                                    })
-                                }
-                            })
-                        }
-                    } )
+                const clientData = {
+                    name : data.name,
+                    email : data.email,
+                    phone : data.phone,
+                    provider : data.provider
+                }
+                Table.find({},(err,tdata)=>{
+                     if(!err){
+                         Table.findOneAndUpdate({_id :tdata[0]._id }, {$pull : {client :{name : data.name}}},(err,data)=>{
+                             if(!err){
+                                 Table.findOneAndUpdate({_id : tdata[0]._id},{$push: {client : clientData}},(err,data)=>{
+                                     if(!err){
+                                        res.status(200).send({
+                                            status : "success",
+                                            message : "client edited successfully"
+                                        })                                         
+                                     }
+                                 } )
+                             }
+                         })
+                     }
                 })
             }
         })
+
+        }
+
+        if(!name && !phone){
+            const request = req.body.email
+            Client.findOneAndUpdate({_id : req.params.id},{email : request},{ new: true },(err,data)=>{
+                if(!err){
+                    const clientData = {
+                        name : data.name,
+                        email : data.email,
+                        phone : data.phone,
+                        provider : data.provider
+                    }
+                    Table.find({},(err,tdata)=>{
+                         if(!err){
+                             Table.findOneAndUpdate({_id :tdata[0]._id }, {$pull : {client :{name : data.name}}},(err,data)=>{
+                                 if(!err){
+                                     Table.findOneAndUpdate({_id : tdata[0]._id},{$push: {client : clientData}},(err,data)=>{
+                                         if(!err){
+                                            res.status(200).send({
+                                                status : "success",
+                                                message : "client edited successfully"
+                                            })                                         
+                                         }
+                                     } )
+                                 }
+                             })
+                         }
+                    })
+                }
+            })            
+        }
+        
+        if(!email && !phone){
+            const request = req.body.name
+            Client.findOneAndUpdate({_id : req.params.id},{name : request},{ new: true },(err,data)=>{
+                if(!err){
+                    const clientData = {
+                        name : data.name,
+                        email : data.email,
+                        phone : data.phone,
+                        provider : data.provider
+                    }
+                    Table.find({},(err,tdata)=>{
+                         if(!err){
+                             Table.findOneAndUpdate({_id :tdata[0]._id }, {$pull : {client :{email : data.email}}},(err,data)=>{
+                                 if(!err){
+                                     Table.findOneAndUpdate({_id : tdata[0]._id},{$push: {client : clientData}},(err,data)=>{
+                                         if(!err){
+                                            res.status(200).send({
+                                                status : "success",
+                                                message : "client edited successfully"
+                                            })                                         
+                                         }
+                                     } )
+                                 }
+                             })
+                         }
+                    })
+                }
+            })            
+        }
+
     }catch (err){
         res.status(500).send(err)
     }

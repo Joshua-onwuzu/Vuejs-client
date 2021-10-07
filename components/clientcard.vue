@@ -72,36 +72,84 @@ import Provider  from  './provider.vue' ;
                 this.$emit("deleteclient", event.target.id)
             },
             editSaveClient() {
-
+                
                 let name = this.neweditname;
-                if(this.neweditname == null){
-                    name = this.editname
-                }
+
                 let phone = this.neweditphone;
-                if(this.neweditphone == null){
-                    phone = this.editphone
-                }
+
                 let email = this.neweditemail;
-                if(this.neweditemail == null){
-                    email = this.editemail
-                }
 
-                const clientData = {
-                    name : name,
-                    email : email,
-                    phone : phone,
-                    providerArray : this.clientprovider
-                }
-                const response = fetch (`http://localhost:3000/api/update/client/${this.editid}`,{
-                    method : 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                        },
-                    body : JSON.stringify(clientData)
-                })
+                const editClientArray = [
+                    {
+                        value : name,
+                        identifier : "name"
+                    },
+                    {
+                        value : phone,
+                        identifier : "phone"
+                    },
+                    {
+                        value : email,
+                        identifier : "email"
+                    }
+                ]
 
-                window.location.reload()
+                const identifierArray = [];
 
+                editClientArray.forEach(item =>{
+                    if(item.value == null){
+                        console.log("no")
+                    }else{
+                        identifierArray.push(item);
+                    }
+                });
+
+
+                identifierArray.forEach(item =>{
+                    if(item.identifier == "name"){
+                        console.log("breach")
+                        const data = {
+                            name : item.value
+                        }
+                        const response = fetch (`http://localhost:3000/api/update/client/${this.editid}`,{
+                            method : 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                                },
+                            body : JSON.stringify(data)
+                        });
+
+                        window.location.reload()
+                    }
+                    if(item.identifier == "phone"){
+                        const data = {
+                            phone : item.value
+                        }
+                        const response = fetch (`http://localhost:3000/api/update/client/${this.editid}`,{
+                            method : 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                                },
+                            body : JSON.stringify(data)
+                        })
+                        window.location.reload()
+                    } 
+                    if(item.identifier == "email"){
+                        const data = {
+                            email : item.value
+                        }
+                        const response =  fetch (`http://localhost:3000/api/update/client/${this.editid}`,{
+                            method : 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                                },
+                            body : JSON.stringify(data)
+                        });
+
+                        window.location.reload()
+
+                    }                                       
+                });
             },
             saveProviderId (id){
                 this.idArray.push(id)

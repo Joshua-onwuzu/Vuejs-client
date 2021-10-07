@@ -43,7 +43,7 @@
 <script>
     import ClientProvider from './clientprovider.vue'
     export default ({
-        name: "helloworld",
+        name: "provider",
 
         created (){
             this.makeRequest();

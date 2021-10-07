@@ -79,7 +79,7 @@
         async created (){
             const response = await fetch('http://localhost:3000/api/client');
             const data = await response.json();
-            this.clients = data[0].client
+            this.clients = data
         },
 
         components : {
