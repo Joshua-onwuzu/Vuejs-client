@@ -21,7 +21,10 @@ input[type=button]{
   border-bottom: 1px solid #ced4da;
   padding: 10px;
 }
-
+.add-client-header h3 {
+  color : rgb(23, 169, 253);
+  font-weight: 600;
+}
 /* .client-info{
     text-align: center;
 } */
@@ -45,6 +48,7 @@ input[type=button]{
 }
 .client-header h3 {
     display: inline;
+    color : rgb(23, 169, 253)
 }
 .client-table{
     border-collapse: collapse;
@@ -120,7 +124,11 @@ input[type=button]{
 }
 .icon{
   padding: 10px;
+  color : rgb(23, 169, 253);
+  text-decoration: underline;
+  cursor: pointer;
 }
+
 .action-bar{
   margin-top: 20px;
   padding: 10px;

@@ -1,7 +1,7 @@
 <template>
     <span>
-        <span @click="edit" class="icon"><i class="fas fa-edit"></i></span>
-        <span @click="handleDelete" class="icon"><i class="fas fa-trash"></i></span>
+        <span @click="edit" class="icon"><a>Edit</a></span>
+        <span @click="handleDelete" class="icon"><a>Delete</a></span>
     </span>
 </template>
 
