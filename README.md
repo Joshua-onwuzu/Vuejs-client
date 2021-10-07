@@ -8,6 +8,8 @@ You need to have MongoDB, Nodejs, and Npm installed globally on your local machi
 #### Installing
 * Clone the repository
 * Navigate to the location of the folder and run ```npm install ``` to install dependencies
+* On a different tab run command ```mongod``` to start up MongoDB server
+* Command ```mongo``` can be used to perform administrative operations on MongoDB
 * Run command ```node server.js``` to start server
 
 ## API Documentation
