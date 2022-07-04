@@ -2,9 +2,9 @@
     display: none;
 }
 
-input[type=button]{
+/* input[type=button]{
     margin: 10px;
-}
+} */
 
 .page-wrapper{
     padding: 10px;
@@ -33,6 +33,15 @@ input[type=button]{
   float: left;
   margin-right: 10px;
   margin-top: 18px;
+}
+.flex {
+  display: flex !important;
+}
+.items-center {
+  align-items: center !important;
+}
+.w-full {
+  width: 100% !important;
 }
 .client-section{
     padding-left: 10%;
@@ -107,6 +116,9 @@ input[type=button]{
   text-align: left;
 
 }
+.text-blue{
+  color : rgb(23, 169, 253)
+}
 .emptyprovider{
   text-align: center;
   padding: 20px;
@@ -141,6 +153,13 @@ input[type=button]{
   margin: auto;
   padding: .295rem .75rem;
 }
+.border {
+  border-width: 1px !important;
+}
+.border-black {
+  --tw-border-opacity: 1 !important;
+  border-color: rgba(0, 0, 0, var(--tw-border-opacity)) !important;
+}
 .inner-form{
   padding :20px;
   margin-top: 10px;
@@ -149,6 +168,12 @@ input[type=button]{
   float: left;
   color: #ffffff;
   background-color: red;
+}
+.p-4 {
+  padding: 1rem/* 16px */ !important;
+}
+.bg-light-blue{
+  background-color: #EAF6F6
 }
 .provider-space{
   margin-left: 10px;

@@ -1,7 +1,11 @@
 <template>
-    <div class="client-header">
-    <h3>Clients</h3>
-    <input @click="show" type="button" value="Add Client">
+    <div class="bg-light-blue flex items-center border p-4 ">
+        <div class="w-full ">       
+            <h3 class="text-blue">Clients</h3> 
+        </div>
+        <div class="">    
+            <input class="" @click="show" type="button" value="New Client"> 
+        </div>
     </div>
 </template>
 

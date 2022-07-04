@@ -107,7 +107,6 @@ import Provider  from  './provider.vue' ;
 
                 identifierArray.forEach(item =>{
                     if(item.identifier == "name"){
-                        console.log("breach")
                         const data = {
                             name : item.value
                         }
@@ -118,8 +117,6 @@ import Provider  from  './provider.vue' ;
                                 },
                             body : JSON.stringify(data)
                         });
-
-                        window.location.reload()
                     }
                     if(item.identifier == "phone"){
                         const data = {
@@ -132,7 +129,6 @@ import Provider  from  './provider.vue' ;
                                 },
                             body : JSON.stringify(data)
                         })
-                        window.location.reload()
                     } 
                     if(item.identifier == "email"){
                         const data = {
@@ -146,9 +142,8 @@ import Provider  from  './provider.vue' ;
                             body : JSON.stringify(data)
                         });
 
-                        window.location.reload()
-
-                    }                                       
+                    }  
+                     window.location.reload()                                     
                 });
             },
             saveProviderId (id){
