@@ -1,7 +1,7 @@
 <template>
     <div class="client-header">
     <h3>Clients</h3>
-    <input @click="show" type="button" value="New Client">
+    <input @click="show" type="button" value="Add Client">
     </div>
 </template>
 
